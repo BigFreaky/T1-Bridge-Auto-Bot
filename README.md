@@ -1,16 +1,11 @@
-# 🤖 Multi-Chain Bridge Bot
+# 🤖 T1-Bridge-Auto-Bot
 
-A powerful and user-friendly command-line interface (CLI) tool for automating cryptocurrency bridging across multiple EVM-compatible networks, including a custom T1 Devnet. Built with Node.js, `ethers.js`, and `blessed` for a rich terminal experience.
-
-![Bot Screenshot](https://i.imgur.com/y4jZk7J.png)
-*Note: This is a representative image of the UI.*
+A powerful and user-friendly command-line interface (CLI) tool for automating cross-chain bridging across multiple EVM-compatible networks, including a custom T1 Devnet. Built with Node.js, `ethers.js`, and `blessed` for a rich terminal experience.
 
 ## ✨ Features
 
 - **Interactive CLI Dashboard**: A terminal-based UI to monitor and control all operations without leaving your console.
-- **Multi-Network Support**: Pre-configured for bridging between:
-  - **Sepolia** <-> **T1 Devnet**
-  - **Arbitrum Sepolia** <-> **Base Sepolia**
+- **Multi-Network Support**: Pre-configured for bridging between T1 Devnet, Sepolia, Arbitrum, and Base Sepolia.
 - **Automated Bridging Cycles**: Set the number of bridging transactions and let the bot run automatically.
 - **Real-Time Monitoring**: View live transaction logs, wallet balances, and operational status at a glance.
 - **Secure Configuration**: Keeps your sensitive private key separate from the main codebase using a `.env` file.
@@ -35,7 +30,7 @@ Follow these steps to get the bot up and running on your local machine.
 Clone this project to your local machine using Git:
 
 ```bash
-git clone [https://github.com/your-username/multi-chain-bridge-bot.git](https://github.com/your-username/multi-chain-bridge-bot.git)
+git clone https://github.com/your-username/multi-chain-bridge-bot.git
 cd multi-chain-bridge-bot
 ```
 
@@ -49,15 +44,7 @@ npm install
 
 ### 3. Configure Your Environment
 
-The bot uses a `.env` file to store your wallet's private key and other configurations.
-
-First, create a `.env` file in the root of the project directory:
-
-```bash
-touch .env
-```
-
-Next, open the `.env` file and add your wallet's private key. This is the **only value** you need to add.
+Open the `.env` file and add your wallet's private key. This is the **only value** you need to add.
 
 ```env
 # --- Wallet Configuration ---
@@ -65,10 +52,10 @@ Next, open the `.env` file and add your wallet's private key. This is the **only
 PRIVATE_KEY="YOUR_WALLET_PRIVATE_KEY_HERE"
 
 # --- RPC URL Configuration (Pre-configured) ---
-RPC_URL_T1="[https://rpc.v006.t1protocol.com](https://rpc.v006.t1protocol.com)"
-RPC_URL_SEPOLIA="[https://sepolia.infura.io/v3/a600d82523974fde86a5e6e7f3d00ca8](https://sepolia.infura.io/v3/a600d82523974fde86a5e6e7f3d00ca8)"
-RPC_URL_BASE_SEPOLIA="[https://base-sepolia.infura.io/v3/a600d82523974fde86a5e6e7f3d00ca8](https://base-sepolia.infura.io/v3/a600d82523974fde86a5e6e7f3d00ca8)"
-RPC_URL_ARBITRUM_SEPOLIA="[https://arbitrum-sepolia.infura.io/v3/a600d82523974fde86a5e6e7f3d00ca8](https://arbitrum-sepolia.infura.io/v3/a600d82523974fde86a5e6e7f3d00ca8)"
+RPC_URL_T1="https://rpc.v006.t1protocol.com"
+RPC_URL_SEPOLIA="https://sepolia.infura.io/v3/a600d82523974fde86a5e6e7f3d00ca8"
+RPC_URL_BASE_SEPOLIA="https://base-sepolia.infura.io/v3/a600d82523974fde86a5e6e7f3d00ca8"
+RPC_URL_ARBITRUM_SEPOLIA="https://arbitrum-sepolia.infura.io/v3/a600d82523974fde86a5e6e7f3d00ca8"
 
 # --- T1 Devnet Network Configuration (Pre-configured) ---
 T1_CHAIN_ID="299992"

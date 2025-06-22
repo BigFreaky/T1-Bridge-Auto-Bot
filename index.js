@@ -2,7 +2,6 @@ import "dotenv/config";
 import blessed from "blessed";
 import { ethers } from "ethers";
 
-// --- STYLING AND CONFIGURATION CONSTANTS ---
 const STYLE = {
   fg: "white",
   bg: "black",
@@ -18,14 +17,12 @@ const STYLE = {
   bridge: "magenta",
 };
 
-// --- WALLET AND STATE INITIALIZATION ---
 const PRIVATE_KEY = process.env.PRIVATE_KEY;
 if (!PRIVATE_KEY) {
   console.error("Fatal Error: PRIVATE_KEY is not set in your .env file.");
   process.exit(1);
 }
 
-// Check for required environment variables
 const requiredEnvVars = [
     'RPC_URL_SEPOLIA',
     'RPC_URL_T1',
@@ -47,7 +44,6 @@ const NETWORKS = {
     name: "Sepolia",
     rpcUrl: process.env.RPC_URL_SEPOLIA,
     chainId: 11155111,
-    // This is the T1 Gateway Router on Sepolia L1 for bridging to T1
     bridgeContract: process.env.T1_L1_BRIDGE_CONTRACT,
   },
   t1: {
@@ -84,13 +80,11 @@ let transactionLogs = [];
 let bridgeStatus = "Idle";
 let bridgeCancelled = false;
 
-// --- HELPER FUNCTIONS ---
 const getShortAddress = (address) => `${address.slice(0, 6)}...${address.slice(-4)}`;
 const getRandomDelay = () => Math.random() * (60000 - 30000) + 30000;
 const getRandomNumber = (min, max) => Math.random() * (max - min) + min;
 const getShortHash = (hash) => `${hash.slice(0, 6)}...${hash.slice(-4)}`;
 
-// --- UI SETUP (BLESSED.JS) ---
 const screen = blessed.screen({
   smartCSR: true,
   title: "Multi-Chain Bridge Bot",
@@ -290,15 +284,6 @@ const promptBox = blessed.prompt({
     },
 });
 
-
-// --- UI AND LOGIC FUNCTIONS ---
-
-/**
- * Wraps a string to a given width.
- * @param {string} text The text to wrap.
- * @param {number} maxWidth The maximum width of a line.
- * @returns {string[]} An array of strings, representing the wrapped lines.
- */
 function wordWrap(text, maxWidth) {
     if (!text || text.length <= maxWidth || maxWidth <= 0) {
         return [text || ''];
@@ -488,9 +473,6 @@ async function waitWithCancel(delay) {
   });
 }
 
-
-// --- BRIDGE EXECUTION LOGIC ---
-
 async function executeL2Bridge(sourceNetwork, destNetwork, amount) {
   addLog(`Bridging ${ethers.formatEther(amount)} ETH from ${sourceNetwork.name} to ${destNetwork.name}`, "bridge");
 
@@ -571,9 +553,6 @@ async function executeT1Bridge(sourceNetwork, destNetwork, amount) {
     return false;
   }
 }
-
-
-// --- AUTO-BRIDGE WORKFLOWS ---
 
 async function runAutoL2Bridge(source, destination, loopCount) {
   if (bridgeStatus === 'Running') {
@@ -679,8 +658,6 @@ async function runAutoT1Bridge(loopCount) {
   await updateBalances();
   addLog("Automated T1 bridge operation finished.", "success");
 }
-
-// --- EVENT HANDLERS AND MAIN LOOP ---
 
 screen.key(["escape", "q", "C-c"], () => process.exit(0));
 screen.key(["m", "M"], () => showMenu(mainMenu));

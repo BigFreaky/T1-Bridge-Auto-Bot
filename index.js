@@ -2,65 +2,6 @@ import "dotenv/config";
 import blessed from "blessed";
 import { ethers } from "ethers";
 import chalk from 'chalk';
-import figlet from 'figlet';
-
-/**
- * Displays a colorful ASCII art banner in the console with updated details,
- * centered and with a thin line border.
- */
-function displayBanner() {
-    // Gracefully handle environments where stdout might not be available or columns is zero
-    const width = process.stdout.columns && process.stdout.columns > 0 ? process.stdout.columns : 80;
-    const bannerText = 'EARNINGDROP';
-    const telegramText = '- Telegram Channel: EARNINGDROP | Link: https://t.me/earningdropshub -';
-    const botDescriptionText = 'KITEAI AUTOMATED BOT DESIGNED FOR DAILY AI INTERACTIONS';
-
-    // Generate figlet text and find the width of the banner part
-    const figletBannerLines = figlet.textSync(bannerText, { font: "ANSI Shadow", horizontalLayout: 'full' }).split('\n');
-    const figletWidth = figletBannerLines.reduce((max, line) => Math.max(max, line.length), 0);
-
-    // Determine the maximum content width
-    const contentWidth = Math.max(
-        figletWidth,
-        telegramText.length,
-        botDescriptionText.length
-    );
-
-    // Calculate border width, ensuring it's not wider than the terminal
-    const borderWidth = Math.min(width - 4, contentWidth + 6);
-    const borderLine = '─'.repeat(borderWidth);
-    const padAmount = Math.floor((width - borderWidth) / 2);
-    const padding = ' '.repeat(padAmount > 0 ? padAmount : 0);
-
-    // Top border
-    console.log(chalk.gray(padding + '┌' + borderLine + '┐'));
-
-    // Display banner lines
-    figletBannerLines.forEach(line => {
-        if (line.trim() === '') return;
-        const centeredLine = line.padStart(line.length + Math.floor((borderWidth - line.length) / 2));
-        console.log(chalk.gray(padding + '│') + chalk.cyanBright(centeredLine.padEnd(borderWidth)) + chalk.gray('│'));
-    });
-
-    // Helper for centering text content
-    const centerContent = (text, color) => {
-        const centeredText = text.padStart(text.length + Math.floor((borderWidth - text.length) / 2));
-        console.log(chalk.gray(padding + '│') + color(centeredText.padEnd(borderWidth)) + chalk.gray('│'));
-    };
-
-    // Separator and content
-    console.log(chalk.gray(padding + '├' + '─'.repeat(borderWidth) + '┤'));
-    centerContent(telegramText, chalk.cyanBright);
-    centerContent(botDescriptionText, chalk.yellowBright);
-
-    // Bottom border
-    console.log(chalk.gray(padding + '└' + borderLine + '┘'));
-    console.log('\n'); // Add a final newline for spacing
-}
-
-// Display the banner right away when the script starts
-displayBanner();
-
 
 const STYLE = {
   fg: "white",
@@ -146,7 +87,7 @@ const getShortHash = (hash) => `${hash.slice(0, 6)}...${hash.slice(-4)}`;
 
 const screen = blessed.screen({
   smartCSR: true,
-  title: "T1-Bridge-Auto-Bot",
+  title: "T1 Protocol Bridge",
   fullUnicode: true,
 });
 
@@ -156,7 +97,7 @@ const header = blessed.box({
   left: 0,
   width: "100%",
   height: 1,
-  content: "{center}T1-Bridge-Auto-Bot{/center}",
+  content: "{center}T1 Protocol Auto Bridge Bot - Makera1n{/center}",
   tags: true,
   style: { fg: STYLE.fg, bg: STYLE.bg },
 });
@@ -166,7 +107,7 @@ const logsPanel = blessed.box({
   top: 1,
   left: 0,
   width: "65%",
-  height: "100%-2",
+  height: "100%-3",
   label: "Transaction Logs",
   border: { type: "line" },
   style: {
@@ -198,7 +139,7 @@ const controlPanel = blessed.box({
   top: 1,
   left: "65%",
   width: "35%",
-  height: "100%-2",
+  height: "100%-3",
   label: "Control Panel",
   border: { type: "line" },
   style: {
@@ -311,6 +252,17 @@ const l2BridgeMenu = createMenu([
     "Base Sepolia - Arbitrum Sepolia",
     "Back to Main Menu",
 ]);
+
+const telegramFooter = blessed.box({
+  parent: screen,
+  bottom: 1,
+  left: 0,
+  width: "100%",
+  height: 1,
+  tags: true,
+  content: "{center}Telegram: t.me/earningdropshub | Youtube: @earningdropshub{/center}",
+  style: { fg: STYLE.info, bg: STYLE.bg },
+});
 
 const footer = blessed.box({
   parent: screen,

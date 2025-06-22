@@ -1,0 +1,17 @@
+{
+  "name": "T1 Bridge Auto Bot",
+  "version": "1.0.0",
+  "description": "A automate bridging operations tools for T1 Testnet bridge",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "start": "node index.js"
+  },
+  "dependencies": {
+    "blessed": "^0.1.81",
+    "dotenv": "^16.4.5",
+    "ethers": "^6.13.1"
+  },
+  "author": "Makera1n",
+  "license": "ISC"
+}

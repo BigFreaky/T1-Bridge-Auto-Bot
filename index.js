@@ -1,6 +1,66 @@
 import "dotenv/config";
 import blessed from "blessed";
 import { ethers } from "ethers";
+import chalk from 'chalk';
+import figlet from 'figlet';
+
+/**
+ * Displays a colorful ASCII art banner in the console with updated details,
+ * centered and with a thin line border.
+ */
+function displayBanner() {
+    // Gracefully handle environments where stdout might not be available or columns is zero
+    const width = process.stdout.columns && process.stdout.columns > 0 ? process.stdout.columns : 80;
+    const bannerText = 'EARNINGDROP';
+    const telegramText = '- Telegram Channel: EARNINGDROP | Link: https://t.me/earningdropshub -';
+    const botDescriptionText = 'KITEAI AUTOMATED BOT DESIGNED FOR DAILY AI INTERACTIONS';
+
+    // Generate figlet text and find the width of the banner part
+    const figletBannerLines = figlet.textSync(bannerText, { font: "ANSI Shadow", horizontalLayout: 'full' }).split('\n');
+    const figletWidth = figletBannerLines.reduce((max, line) => Math.max(max, line.length), 0);
+
+    // Determine the maximum content width
+    const contentWidth = Math.max(
+        figletWidth,
+        telegramText.length,
+        botDescriptionText.length
+    );
+
+    // Calculate border width, ensuring it's not wider than the terminal
+    const borderWidth = Math.min(width - 4, contentWidth + 6);
+    const borderLine = '─'.repeat(borderWidth);
+    const padAmount = Math.floor((width - borderWidth) / 2);
+    const padding = ' '.repeat(padAmount > 0 ? padAmount : 0);
+
+    // Top border
+    console.log(chalk.gray(padding + '┌' + borderLine + '┐'));
+
+    // Display banner lines
+    figletBannerLines.forEach(line => {
+        if (line.trim() === '') return;
+        const centeredLine = line.padStart(line.length + Math.floor((borderWidth - line.length) / 2));
+        console.log(chalk.gray(padding + '│') + chalk.cyanBright(centeredLine.padEnd(borderWidth)) + chalk.gray('│'));
+    });
+
+    // Helper for centering text content
+    const centerContent = (text, color) => {
+        const centeredText = text.padStart(text.length + Math.floor((borderWidth - text.length) / 2));
+        console.log(chalk.gray(padding + '│') + color(centeredText.padEnd(borderWidth)) + chalk.gray('│'));
+    };
+
+    // Separator and content
+    console.log(chalk.gray(padding + '├' + '─'.repeat(borderWidth) + '┤'));
+    centerContent(telegramText, chalk.cyanBright);
+    centerContent(botDescriptionText, chalk.yellowBright);
+
+    // Bottom border
+    console.log(chalk.gray(padding + '└' + borderLine + '┘'));
+    console.log('\n'); // Add a final newline for spacing
+}
+
+// Display the banner right away when the script starts
+displayBanner();
+
 
 const STYLE = {
   fg: "white",
@@ -19,23 +79,23 @@ const STYLE = {
 
 const PRIVATE_KEY = process.env.PRIVATE_KEY;
 if (!PRIVATE_KEY) {
-  console.error("Fatal Error: PRIVATE_KEY is not set in your .env file.");
+  console.error(chalk.red("Fatal Error: PRIVATE_KEY is not set in your .env file."));
   process.exit(1);
 }
 
 const requiredEnvVars = [
-    'RPC_URL_SEPOLIA',
-    'RPC_URL_T1',
-    'T1_CHAIN_ID',
-    'T1_L1_BRIDGE_CONTRACT',
-    'T1_L2_BRIDGE_CONTRACT'
+    'RPC_URL_SEPOLIA',
+    'RPC_URL_T1',
+    'T1_CHAIN_ID',
+    'T1_L1_BRIDGE_CONTRACT',
+    'T1_L2_BRIDGE_CONTRACT'
 ];
 
 for (const variable of requiredEnvVars) {
-    if (!process.env[variable]) {
-        console.error(`Fatal Error: ${variable} is not set in your .env file.`);
-        process.exit(1);
-    }
+    if (!process.env[variable]) {
+        console.error(chalk.red(`Fatal Error: ${variable} is not set in your .env file.`));
+        process.exit(1);
+    }
 }
 
 
@@ -50,7 +110,6 @@ const NETWORKS = {
     name: "T1 Devnet",
     rpcUrl: process.env.RPC_URL_T1,
     chainId: parseInt(process.env.T1_CHAIN_ID, 10),
-    // This is the T1 Gateway Router on the T1 L2 for bridging back to Sepolia
     bridgeContract: process.env.T1_L2_BRIDGE_CONTRACT,
   },
   baseSepolia: {
@@ -323,7 +382,6 @@ function wordWrap(text, maxWidth) {
 function addLog(message, type = "info") {
   const timestamp = new Date().toLocaleTimeString();
 
-  // Define base labels and their styled versions
   const labels = {
     bridge:  `{${STYLE.bridge}-fg}[BRIDGE]{/}`,
     system:  `[SYSTEM]`,
@@ -333,7 +391,6 @@ function addLog(message, type = "info") {
     info:    `{${STYLE.info}-fg}[INFO]{/}`,
   };
 
-  // Define the plain text for length calculation
   const plainLabels = {
     bridge:  `[BRIDGE]`,
     system:  `[SYSTEM]`,
@@ -343,44 +400,28 @@ function addLog(message, type = "info") {
     info:    `[INFO]`,
   };
 
-  // Find the max length among all plain labels
   const maxLength = Math.max(...Object.values(plainLabels).map(l => l.length));
-
-  // Get the current label info
   const currentLabel = labels[type] || labels.info;
   const currentPlainLabel = plainLabels[type] || plainLabels.info;
-
-  // Calculate padding needed for the current label to ensure alignment
   const labelPadding = ' '.repeat(maxLength - currentPlainLabel.length);
-
-  // Construct the full prefix with consistent spacing
-  const prefix = `${currentLabel}${labelPadding} `; // Add extra space after padding for separation
+  const prefix = `${currentLabel}${labelPadding} `;
   const visualPrefix = `[${timestamp}] ${prefix}`;
-
-  // Calculate length of the prefix without blessed tags for accurate word wrap padding
   const plainPrefix = visualPrefix.replace(/\{[^\}]+\}/g, '');
   const padding = ' '.repeat(plainPrefix.length);
-
-  // Determine the available width for the message itself
-  const logBoxInnerWidth = logsBox.iwidth ? logsBox.iwidth - 1 : 70; // -1 for safety margin
+  const logBoxInnerWidth = logsBox.iwidth ? logsBox.iwidth - 1 : 70;
   const messageWrapWidth = logBoxInnerWidth - plainPrefix.length;
-
-  // Wrap the incoming message based on available space
   const wrappedLines = wordWrap(message, messageWrapWidth > 0 ? messageWrapWidth : 1);
 
-  // Log the first line with the full prefix
   const firstLine = `${visualPrefix}${wrappedLines[0] || ''}`;
   logsBox.log(firstLine);
   transactionLogs.push(firstLine);
 
-  // Log subsequent wrapped lines with correct padding to maintain alignment
   for (let i = 1; i < wrappedLines.length; i++) {
     const subsequentLine = `${padding}${wrappedLines[i]}`;
     logsBox.log(subsequentLine);
     transactionLogs.push(subsequentLine);
   }
 
-  // Keep the log array from growing indefinitely
   while (transactionLogs.length > 500) {
     transactionLogs.shift();
   }
@@ -733,6 +774,6 @@ async function main() {
 }
 
 main().catch(err => {
-  console.error("A fatal error occurred:", err);
+  console.error(chalk.red("A fatal error occurred:"), err);
   process.exit(1);
 });

@@ -46,21 +46,8 @@ npm install
 
 Open the `.env` file and add your wallet's private key. This is the **only value** you need to add.
 
-```env
-# --- Wallet Configuration ---
-# IMPORTANT: Replace "YOUR_WALLET_PRIVATE_KEY_HERE" with your actual private key
-PRIVATE_KEY="YOUR_WALLET_PRIVATE_KEY_HERE"
-
-# --- RPC URL Configuration (Pre-configured) ---
-RPC_URL_T1="https://rpc.v006.t1protocol.com"
-RPC_URL_SEPOLIA="https://sepolia.infura.io/v3/a600d82523974fde86a5e6e7f3d00ca8"
-RPC_URL_BASE_SEPOLIA="https://base-sepolia.infura.io/v3/a600d82523974fde86a5e6e7f3d00ca8"
-RPC_URL_ARBITRUM_SEPOLIA="https://arbitrum-sepolia.infura.io/v3/a600d82523974fde86a5e6e7f3d00ca8"
-
-# --- T1 Devnet Network Configuration (Pre-configured) ---
-T1_CHAIN_ID="299992"
-T1_L1_BRIDGE_CONTRACT="0x3276328ecAeD71Ae1A19e5Ce0967aE99dE33854d"
-T1_L2_BRIDGE_CONTRACT="0xb80C203CF7E3dfcA26EB5D6c1529d31E33E9dcEf"
+```bash
+nano .env
 ```
 
 > **Security Note**: Your private key grants full control over your wallet. **Never** share it with anyone or commit it to a public repository. The `.gitignore` file is configured to prevent this file from being tracked by Git.

@@ -87,7 +87,7 @@ const getShortHash = (hash) => `${hash.slice(0, 6)}...${hash.slice(-4)}`;
 
 const screen = blessed.screen({
   smartCSR: true,
-  title: "Multi-Chain Bridge Bot",
+  title: "T1-Bridge-Auto-Bot",
   fullUnicode: true,
 });
 
@@ -97,7 +97,7 @@ const header = blessed.box({
   left: 0,
   width: "100%",
   height: 1,
-  content: "{center}--- MULTI-CHAIN BRIDGE BOT ---{/center}",
+  content: "{center}T1-Bridge-Auto-Bot{/center}",
   tags: true,
   style: { fg: STYLE.fg, bg: STYLE.bg },
 });

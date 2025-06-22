@@ -31,7 +31,7 @@ Clone this project to your local machine using Git:
 
 ```bash
 git clone https://github.com/BigFreaky/T1-Bridge-Auto-Bot.git
-cd multi-chain-bridge-bot
+cd T1-Bridge-Auto-Bot
 ```
 
 ### 2. Install Dependencies

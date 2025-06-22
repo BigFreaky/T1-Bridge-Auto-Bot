@@ -30,7 +30,7 @@ Follow these steps to get the bot up and running on your local machine.
 Clone this project to your local machine using Git:
 
 ```bash
-git clone https://github.com/your-username/multi-chain-bridge-bot.git
+git clone https://github.com/BigFreaky/T1-Bridge-Auto-Bot.git
 cd multi-chain-bridge-bot
 ```
 
